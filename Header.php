@@ -3,10 +3,10 @@ require_once 'utilities/htmlHelper.php';
 
     echo "<img src='images/favicon.ico'>";
 echo html_open("div ");
-    echo "<h1>Gestionnaire de favoris</h1>";
+    echo "<h1>Gestionnaire des acteurs</h1>";
 echo html_close("div");
 
-if(isset($_COOKIE['Nom']))
+/*if(isset($_COOKIE['Nom']))
 {
     echo html_open("div ");
         echo "Visiteur: ";
@@ -23,7 +23,7 @@ if(isset($_SESSION['ValidUser']) && $_SESSION['ValidUser'] == true)
     echo html_open("div ");
         echo '<a href="Logout.php"><img src="images/Exit.png"></a>';
     echo html_close("div");
-}
+}*/
 
 require_once 'MasterPage.php';
 ?>
