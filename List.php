@@ -23,17 +23,6 @@ $content = html_open("div").html_open("b")."Favoris".html_close("b").html_close(
         .html_close("div")
     .html_close("hr");
 
-
-
-
-
-
-
-
-
-
-
-
 function showActeurs($acteurs) {
     if (isset($acteurs)) {
         echo '<div>';
