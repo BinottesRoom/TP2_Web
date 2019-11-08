@@ -21,24 +21,29 @@ $content = html_open("div").html_open("b")."Favoris".html_close("b").html_close(
         .html_close("div")
     .html_close("hr");
 
-
-function showActeurs($acteurs) {
+function showActeurs($acteurs) 
+{
+    $addToContent = "";
     if (isset($acteurs)) {
-        echo '<div>';
+        $addToContent .= "<div class='bookmarks-row-layout'>";;
         foreach($acteurs as $acteur){
-            echo '<div>';
-                echo '<div></div>';
-                echo '<div>'.$acteur['Id'].'</div>';
-                echo '<div>'.$acteur['Name'].'</div>';
-                echo '<div>'.$acteur['Country'].'</div>';
-                echo '<div>'.$acteur['Birth'].'</div>';
-            echo '</div>';
+           
+            $addToContent .= '<div>'.$acteur['Id'].'</div>';
+            $addToContent .= '<div>'.$acteur['Name'].'</div>';
+            $addToContent .= '<div>'.$acteur['Country'].'</div>';
+            $addToContent .= '<div>'.$acteur['Birth'].'</div>';
+            $addToContent .= "<div><a href='EditForm.php?'><img class='icon' src='images/icons/ICON_Edit_Neutral.png' alt='Ajouter'></a>
+                                   <a href='DetailForm.php?'><img class='icon' src='images/icons/ICON_Details_Click.png' alt='Ajouter'></a>
+                                   <a href='DeleteForm.php?'><img class='icon' src='images/icons/ICON_Delete_Neutral.png' alt='Ajouter'></a>
+                             </div>";
         }
-        echo '</div>';
+        $addToContent .= '</div>';
     }
+    return $addToContent;
 }
 
-showActeurs(Acteurs()->get());
+
+$content .= showActeurs(Acteurs()->get());
 
 require_once "MasterPage.php";
 ?>

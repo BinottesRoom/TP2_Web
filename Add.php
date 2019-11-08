@@ -9,8 +9,6 @@ include_once 'utilities/form.php';
 
 if(isset($_POST['ajouter']))
 {
-    effacerTables();
-    $acteur['Id']=0;
     DB()->beginTransaction();
 
     $acteur['Name']=$_POST['Name'];  
