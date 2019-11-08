@@ -1,5 +1,5 @@
 <?php
-include_once 'DAL/DBA.php';
+include_once 'DBA.php';
 
 // Singletons d'accès aux tables
 final class Acteurs extends TableAccess{
