@@ -14,8 +14,9 @@ if(isset($_POST['ajouter']))
     DB()->beginTransaction();
 
     $acteur['Name']=$_POST['Name'];  
-    $acteur['Country']=$_POST['Country']; 
+    $acteur['Country']=$_POST['pays']; 
     $acteur['Birth']=$_POST['Birth'];
+    Acteurs()->insert($acteur);
 
     DB()->endTransaction();
 }
