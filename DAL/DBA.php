@@ -33,7 +33,7 @@ date_default_timezone_set('US/Eastern');
 //      - double sera considéré comme étant de type DOUBLE
 //
 //  Si l'indentificateur d'un membre
-//      - commence par _ il sera ignorer
+//      - commence par "_" il sera ignoré
 //      - égal à "Id" il sera considéré comme la clé primaire
 //      - contient "Id" il sera considéré comme une clé étrangère
 //      - contient "Date" il sera considéré comme un champ de type DateTime
@@ -152,7 +152,7 @@ abstract class TableAccess {
                             $sqlType = 'INT';
                             break;
                         case 'string': 
-                            $sqlType = 'VARCHAR(655335)'; 
+                            $sqlType = 'VARCHAR(65535)'; 
                             break;
                         case 'password':
                             $hashSample = password_hash('sample', PASSWORD_DEFAULT);
@@ -193,7 +193,7 @@ abstract class TableAccess {
             }
             $sql = rtrim($sql,', ');
             $sql .=');';
-            //echo $sql.'<br><br>';
+            // echo $sql.'<br><br>';
             return $sql;
         }
         public function tableName() {
@@ -493,7 +493,7 @@ final class DataBaseAccess {
             return 0;
         }
         public function nonQuerySqlCmd($sql) {
-            $recordsAffected = 0;
+            $recordsAffected = 0 ;
             try {
                 $this->DBConnect();
                 $this->conn->exec($sql);

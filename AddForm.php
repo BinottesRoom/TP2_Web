@@ -1,5 +1,4 @@
 <?php
-require 'AutresFct.php';
 require 'utilities/htmlHelper.php';
 require_once 'SessionTimeOut.php';
 session_start();
