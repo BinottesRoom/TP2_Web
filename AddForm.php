@@ -15,7 +15,7 @@ $content .= html_textbox("Name", "Name")."<br>";
 
 $content .= html_open("b").html_label("Country", "Country").html_close("b");
 $content .= "<br>";
-$content .= "<select>";
+$content .= "<select name='pays'>";
 $paysAAfficher = Countries()->get();
 DB()->beginTransaction();
 foreach($paysAAfficher as $pays)
