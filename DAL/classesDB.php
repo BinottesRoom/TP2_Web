@@ -94,5 +94,5 @@ function InitCountries() {
 
 // Décommenter la ligne suivante pour transporter les données du fichier texte Countries.txt
 // dans la table Countries de la BD DBM
-InitCountries();
+//InitCountries();
 ?>
