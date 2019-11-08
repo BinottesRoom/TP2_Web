@@ -58,8 +58,6 @@ exit();
 
 
 function effacerTables() {
-    DB()->nonQuerySqlCmd('DROP TABLE Parutions');
-    DB()->nonQuerySqlCmd('DROP TABLE Films');
     DB()->nonQuerySqlCmd('DROP TABLE Acteurs');
 }
 

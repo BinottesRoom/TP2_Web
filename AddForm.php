@@ -10,21 +10,21 @@ $UrlError = isset($_SESSION['URLInvalide'])? $_SESSION['URLInvalide'] : '';
 
 $content = "<div style=\"display:inline\">";
 $content .= html_open("h3");
-$content .="Ajout de favori";
+$content .="Ajout d'un acteur";
 $content .= html_close("h3");
 $content .= html_close("div");
 $content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='POST' action='Add.php'>";
-$content .= html_open("b").html_label("Titre", "Titre").html_close("b");//titre
+$content .= html_open("b").html_label("Name", "Name").html_close("b");//titre
 $content .="<br>";
-$content .= html_textbox("Titre", "Titre");
+$content .= html_textbox("Name", "Name");
 $content .= "<br>".showError($TitreError)."<br>";
-$content .= html_open("b").html_label("Description", "Description").html_close("b");//description
+$content .= html_open("b").html_label("Countries", "Countries").html_close("b");//description
 $content .= "<br>";
-$content .= html_textbox("Description", "Description");
+$content .= html_textbox("Countries", "Countries");
 $content .= "<br>".showError($DescError)."<br>";
-$content .= html_open("b").html_label("URL", "URL").html_close("b");//url
+$content .= html_open("b").html_label("Birth", "Birth").html_close("b");//url
 $content .= "<br>";
-$content .= html_textbox("URL", "URL");
+$content .= html_textbox("Birth", "Birth");
 $content .= "<br>".showError($UrlError)."<br>";
 $content .= html_submit("ajouter", "Ajouter");
 $content .= html_close("form");
