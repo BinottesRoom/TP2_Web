@@ -1,8 +1,6 @@
 <?php
 require 'utilities/htmlHelper.php';
-require_once 'SessionTimeOut.php';
 session_start();
-require 'VerificationAcessIllegalEtSessionExpiree.php';
 
 $TitreError = isset($_SESSION['TitreInvalide'])? $_SESSION['TitreInvalide'] : '';
 $DescError = isset($_SESSION['DescriptionInvalide'])? $_SESSION['DescriptionInvalide'] : '';
@@ -14,18 +12,15 @@ $content .="Ajout d'un acteur";
 $content .= html_close("h3");
 $content .= html_close("div");
 $content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='POST' action='Add.php'>";
-$content .= html_open("b").html_label("Name", "Name").html_close("b");//titre
+$content .= html_open("b").html_label("Name", "Name").html_close("b");
 $content .="<br>";
 $content .= html_textbox("Name", "Name");
-$content .= "<br>".showError($TitreError)."<br>";
-$content .= html_open("b").html_label("Countries", "Countries").html_close("b");//description
+$content .= html_open("b").html_label("Country", "Country").html_close("b");
 $content .= "<br>";
-$content .= html_textbox("Countries", "Countries");
-$content .= "<br>".showError($DescError)."<br>";
-$content .= html_open("b").html_label("Birth", "Birth").html_close("b");//url
+$content .= html_textbox("Country", "Country");
+$content .= html_open("b").html_label("Birth", "Birth").html_close("b");
 $content .= "<br>";
 $content .= html_textbox("Birth", "Birth");
-$content .= "<br>".showError($UrlError)."<br>";
 $content .= html_submit("ajouter", "Ajouter");
 $content .= html_close("form");
 $content .= html_close("div");
