@@ -64,7 +64,7 @@ final class Countries extends TableAccess{
 
 // Singleton d'accès à la base de données
 function DB() {
-    return DataBaseAccess::getInstance('AuteursDB');
+    return DataBaseAccess::getInstance('ActeursDB');
 }
 
 // Fonctions d'accès aux singletons d'accès aux tables
