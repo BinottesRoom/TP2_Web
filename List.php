@@ -2,8 +2,6 @@
 include_once 'DAL/mySQL.php';
 require 'utilities/htmlHelper.php';
 
-
-
 $content = html_open("div").html_open("b")."Favoris".html_close("b").html_close("div")
 .html_open("hr")
         ."<div class=' bookmarks-header-layout bookmark-Header'>"

@@ -1,5 +1,5 @@
 <?php
-include_once 'mySQL.php';
+include_once 'DAL/DBA.php';
 
 // Singletons d'accès aux tables
 final class Acteurs extends TableAccess{
@@ -77,7 +77,7 @@ function Countries() {
 
 function InitCountries() {
     DB()->nonQuerySqlCmd('DROP TABLE Countries');
-    $file = "Countries.txt";
+    $file = "DAL/Countries.txt";
     $fileHandle = fopen($file,'r');
     // Boucle de lecture
     DB()->beginTransaction();

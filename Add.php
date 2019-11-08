@@ -1,7 +1,5 @@
 <?php 
-require 'SessionTimeOut.php';
 session_start();
-require 'VerificationAcessIllegalEtSessionExpiree.php';
 include_once 'utilities/form.php';
 require 'DAL/bookmarks.php';
 
@@ -54,3 +52,33 @@ if(isset($_POST['ajouter']))
 header('Location:List.php');
 exit();
 ?>
+
+<?php
+
+
+
+function effacerTables() {
+    DB()->nonQuerySqlCmd('DROP TABLE Parutions');
+    DB()->nonQuerySqlCmd('DROP TABLE Films');
+    DB()->nonQuerySqlCmd('DROP TABLE Acteurs');
+}
+
+// Fonction de peuplage des données
+function ajouterDonnees() {
+    effacerTables();
+    $acteur['Id']=0;
+    DB()->beginTransaction();
+
+
+    $acteur['Name']='Mark Hamil';  
+    $acteur['Country']=''; 
+    $acteur['Birth']='Harrison Ford';
+
+    DB()->endTransaction();
+}
+
+ajouterDonnees();
+effacerFilm(2);
+afficherFilms(Films()->get());
+//afficherActeurs(Acteurs()->get());
+
