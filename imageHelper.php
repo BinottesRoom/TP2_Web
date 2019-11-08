@@ -1,10 +1,17 @@
 <?php
-
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Module de génération de gestion de téléchargement de fichiers d'image
+//
+// Auteur : Nicolas Chourot dans le cadre du cours 420-KB9
+// Date : 15 octobre 2019
+//
+//////////////////////////////////////////////////////////////////////////////////////////////
 class ImageHelper {
     public $basePath;
     public $defaultImage;
 
-    public function __construct($basePath, $defaultImage) {
+    public function __construct($basePath = 'images', $defaultImage = 'No_image.png') {
         $this->basePath = $basePath;        
         $this->defaultImage = $defaultImage;
     }
@@ -45,14 +52,21 @@ class ImageHelper {
         return $GUID;
     }
 
-    public function upLoadImage($previousGUID) {
+    public function upLoadImage($previousGUID = '') {
         $GUID = '';
-        $check = getimagesize($_FILES['ImageUploader']['tmp_name']);
-        if ($check) {
-            $this->removeFile($previousGUID);
-            $GUID = $this->newGUID();
-            move_uploaded_file($_FILES["ImageUploader"]["tmp_name"], $this->getURL($GUID));
-            return $GUID;
+        try {
+            $fileName = $_FILES['ImageUploader']['tmp_name'];
+            $check = false;
+            if ($fileName !== "")
+                $check = getimagesize($fileName);
+            if ($check) {
+                $this->removeFile($previousGUID);
+                $GUID = $this->newGUID();
+                move_uploaded_file($_FILES["ImageUploader"]["tmp_name"], $this->getURL($GUID));
+                return $GUID;
+            }
+        } catch(Exception $e) {
+
         }
         return $previousGUID;
     }
@@ -62,4 +76,11 @@ class ImageHelper {
             unlink($this->getURL($GUID));
         }    
     }
+}
+
+$imageHelper = new ImageHelper();
+
+function imageHelper() {
+    global $imageHelper;
+    return $imageHelper;
 }

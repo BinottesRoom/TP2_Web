@@ -1,6 +1,4 @@
 // Dépendances: jquery
-alert();
-$(document).ready(()=>{alert();})
 
 $("#ImageUploader").change(function (e) { PreLoadImage(e); });
 $("#UploadButton").click(function () { $("#ImageUploader").trigger("click"); });
