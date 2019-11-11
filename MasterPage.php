@@ -8,7 +8,7 @@
         width:300px;
     }
     .smallPhoto {
-        width:150px;
+        width:75px;
     }
     .photoListLayout {
         display: grid;
@@ -18,9 +18,9 @@
     a {
         color:blue;
     }
+    .smallPhoto
 </style>
-    <?php require 'AllCssLink.php';
-     require 'AllJsLinks.php'; ?>
+
 </head>
 <body> 
     <div class="main">
@@ -42,5 +42,7 @@
     ?>
 </footer>  
 </div>
+<?php require 'AllCssLink.php';
+     require 'AllJsLinks.php'; ?>
 </body>
 </html>

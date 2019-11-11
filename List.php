@@ -1,6 +1,8 @@
 <?php
+require_once 'imageHelper.php';
 include_once 'DAL/classesDB.php';
 require 'utilities/htmlHelper.php';
+
 
 $content = html_open("div").html_open("b")."Favoris".html_close("b").html_close("div")
 .html_open("hr")
@@ -27,8 +29,8 @@ function showActeurs($acteurs)
     if (isset($acteurs)) {
         $addToContent .= "<div class='bookmarks-row-layout'>";;
         foreach($acteurs as $acteur){
-           
-            $addToContent .= '<div>'.$acteur['Id'].'</div>';
+            $url = ImageHelper()->getURL($acteur['ActeurGUID']);
+            $addToContent .= "<div><img class='smallPhoto' src='$url'></div>";
             $addToContent .= '<div>'.$acteur['Name'].'</div>';
             $addToContent .= '<div>'.$acteur['Country'].'</div>';
             $addToContent .= '<div>'.$acteur['Birth'].'</div>';

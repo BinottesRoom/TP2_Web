@@ -10,12 +10,15 @@ final class Acteurs extends TableAccess{
     public $Country;
     /** DATE */
     public $Birth;
+    public $ActeurGUID;
+
     
     public function init() {
         $this->Id = 0;          
         $this->Name = '';
         $this->Country = '';
         $this->Birth = ''; 
+        $this->ActeurGUID = '';
     }
 
     public function __construct($dataBaseAccess) {
