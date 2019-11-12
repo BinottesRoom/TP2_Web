@@ -9,6 +9,7 @@
     }
     .smallPhoto {
         width:75px;
+        height:75px;
     }
     .photoListLayout {
         display: grid;
