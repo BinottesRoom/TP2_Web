@@ -1,7 +1,6 @@
 <?php
 require_once 'utilities/htmlHelper.php';
 
-    echo "<img src='images/favicon.ico'>";
 echo html_open("div ");
     echo "<h1>Gestionnaire des acteurs</h1>";
 echo html_close("div");

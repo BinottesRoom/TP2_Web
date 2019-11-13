@@ -1,51 +1,41 @@
 <?php
+include_once 'DAL/DBA.php';
+require_once 'DAL/classesDB.php';
 require 'utilities/htmlHelper.php';
-require 'AutresFct.php';
-require_once 'SessionTimeOut.php';
-session_start();
-require 'VerificationAcessIllegalEtSessionExpiree.php';
-include_once "DAL/bookmarks.php";
-
-
-$TitreError = isset($_SESSION['TitreInvalide'])? $_SESSION['TitreInvalide'] : '';
-$DescError = isset($_SESSION['DescriptionInvalide'])? $_SESSION['DescriptionInvalide'] : '';
-$UrlError = isset($_SESSION['URLInvalide'])? $_SESSION['URLInvalide'] : '';
-
-    
-$id = $_GET['id'];
-$fd = findBookmark($id);
-//$_SESSION['idEdit'] = $id;
-
-if($fd['Source'] != $_COOKIE['Nom'])
-{
-    header('LoginForm.php');
-    exit();
-}
+require_once 'imageHelper.php';
 
 $content = "<div style=\"display:inline\">";
 $content .= html_open("h3");
-$content .="Modification de favori";
+$content .="Ajout d'un acteur";
 $content .= html_close("h3");
 $content .= html_close("div");
-$content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='POST' action='Edit.php'>";
-$content .= html_open("b").html_label("Titre", "Titre").html_close("b");//titre
+$content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='POST' action='Add.php' enctype='multipart/form-data'>";
+$content .= html_open("b").html_label("Name", "Name").html_close("b");
 $content .="<br>";
-$content .= html_textbox("Titre", "Titre", $fd['Title']);
-$content .= "<br>".showError($TitreError)."<br>";
-$content .= html_open("b").html_label("Description", "Description").html_close("b");//description
+$content .= html_textbox("Name", "Name")."<br>";
+
+$content .= html_open("b").html_label("Country", "Country").html_close("b");
 $content .= "<br>";
-$content .= html_textbox("Description", "Description", $fd['Description']);
-$content .= "<br>".showError($DescError)."<br>";
-$content .= html_open("b").html_label("URL", "URL").html_close("b");//url
+$content .= "<select name='pays'>";
+$paysAAfficher = Countries()->get();
+DB()->beginTransaction();
+foreach($paysAAfficher as $pays)
+{
+    $content .="<option value='$pays[1]'>$pays[1]</option>";
+}
+DB()->endTransaction();
+$content .= "</select>"."<br>";
+$content .= html_open("b").html_label("Birth", "Birth").html_close("b");
 $content .= "<br>";
-$content .= html_textbox("URL", "URL", $fd['Url']);
-$content .= "<br>".showError($UrlError)."<br>";
-$content .= html_submit("modifier", "Modifier");
+$content .= "<input type='date' name='Birth'>";
+$content .= html_open('div', 'divPhoto');
+$content .= imageHelper()->html_ImageUploader('');
+$content .= html_close('div');
+$content .= html_submit("ajouter", "Ajouter");       
 $content .= html_close("form");
 $content .= html_close("div");
 $content .= html_close("hr");
 $content .= "<a href='List.php'><img src='images/Back.png' alt='Retour en arrière'>".html_close("a");
-
 
 include_once 'MasterPage.php';
 ?>

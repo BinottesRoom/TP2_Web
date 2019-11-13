@@ -34,9 +34,9 @@ function showActeurs($acteurs)
             $addToContent .= '<div>'.$acteur['Name'].'</div>';
             $addToContent .= '<div>'.$acteur['Country'].'</div>';
             $addToContent .= '<div>'.$acteur['Birth'].'</div>';
-            $addToContent .= "<div><a href='EditForm.php?'><img class='icon' src='images/icons/ICON_Edit_Neutral.png' alt='Ajouter'></a>
-                                   <a href='DetailForm.php?'><img class='icon' src='images/icons/ICON_Details_Click.png' alt='Ajouter'></a>
-                                   <a href='DeleteForm.php?'><img class='icon' src='images/icons/ICON_Delete_Neutral.png' alt='Ajouter'></a>
+            $addToContent .= "<div><a href='EditForm.php?'><img class='icon' src='images/icons/ICON_Edit_Neutral.png' alt='Edit'></a>
+                                   <a href='DetailForm.php?'><img class='icon' src='images/icons/ICON_Details_Click.png' alt='Details'></a>
+                                   <a href='DeleteForm.php?'><img class='icon' src='images/icons/ICON_Delete_Neutral.png' alt='Delete'></a>
                              </div>";
         }
         $addToContent .= '</div>';
