@@ -26,18 +26,23 @@ $content = html_open("div").html_open("b")."Favoris".html_close("b").html_close(
 function showActeurs($acteurs) 
 {
     $addToContent = "";
-    if (isset($acteurs)) {
+    if (isset($acteurs)) 
+    {
         $addToContent .= "<div class='bookmarks-row-layout'>";;
-        foreach($acteurs as $acteur){
+        $id = 1;
+        foreach($acteurs as $acteur)
+        {
+            
             $url = ImageHelper()->getURL($acteur['ActeurGUID']);
             $addToContent .= "<div><img class='smallPhoto' src='$url'></div>";
             $addToContent .= '<div>'.$acteur['Name'].'</div>';
             $addToContent .= '<div>'.$acteur['Country'].'</div>';
             $addToContent .= '<div>'.$acteur['Birth'].'</div>';
-            $addToContent .= "<div><a href='EditForm.php?'><img class='icon' src='images/icons/ICON_Edit_Neutral.png' alt='Edit'></a>
-                                   <a href='DetailForm.php?'><img class='icon' src='images/icons/ICON_Details_Click.png' alt='Details'></a>
-                                   <a href='DeleteForm.php?'><img class='icon' src='images/icons/ICON_Delete_Neutral.png' alt='Delete'></a>
+            $addToContent .= "<div><a href='EditForm.php?id=$id'><img class='icon' src='images/icons/ICON_Edit_Neutral.png' alt='Edit'></a>
+                                   <a href='DetailForm.php?id=$id'><img class='icon' src='images/icons/ICON_Details_Click.png' alt='Details'></a>
+                                   <a href='DeleteForm.php?id=$id'><img class='icon' src='images/icons/ICON_Delete_Neutral.png' alt='Delete'></a>
                              </div>";
+            $id = $id + 1;
         }
         $addToContent .= '</div>';
     }

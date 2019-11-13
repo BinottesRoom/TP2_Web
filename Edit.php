@@ -1,56 +1,29 @@
-<?php
-require_once 'SessionTimeOut.php';
-session_start();
-require 'VerificationAcessIllegalEtSessionExpiree.php';
+<?php 
+include_once 'DAL/classesDB.php';
+require_once 'imageHelper.php';
+
+
+function effacerTables() {
+    DB()->nonQuerySqlCmd('DROP TABLE Acteurs');
+}
 include_once 'utilities/form.php';
-require 'DAL/bookmarks.php';
 
-
-unset($_SESSION['TitreInvalide']);
-unset($_SESSION['DescriptionInvalide']);
-unset($_SESSION['URLInvalide']);
-
-if(isset($_POST['modifier']))
+$id = $_GET['id'];
+if(isset($_POST['edit']))
 {
-    $titre = $_POST['Titre'];
-    $description = $_POST['Description'];
-    $url = $_POST['URL'];
-    $fichier = "data/bookmarks.txt";
+    //effacerTables();
+    DB()->beginTransaction();
 
-    $bookmarks['Id'] = $_SESSION['idFavoris'];
-    $bookmarks['Title'] = sanitizeString($titre);
-    $bookmarks['Description'] = sanitizeString($description);
-    $bookmarks['Url'] = sanitizeString($url);
-    $bookmarks['Source'] = $_COOKIE['Nom']; 
+    $acteur['Name']=$_POST['Name'];  
+    $acteur['Country']=$_POST['pays']; 
+    $acteur['Birth']=$_POST['Birth'];
+    $acteur['ActeurGUID'] = ImageHelper()->upLoadImage($_POST['ActeurGUID']);
 
-    $_SESSION['favorisValide'] = true;
-    if(trim($bookmarks['Title']) == "" || $bookmarks['Title'] == null )
-    {
-        $_SESSION['favorisValide'] = false;
-        $_SESSION['TitreInvalide'] = 'Le Titre est invalide';
-    }
-    else if(trim($bookmarks['Description']) == "" || $bookmarks['Description'] == null)
-    {
-        $_SESSION['favorisValide'] = false;
-        $_SESSION['DescriptionInvalide'] = 'La description est invalide';
-    }
-    else if(trim($bookmarks['Url']) == "" || $bookmarks['Url']== null)
-    {
-        $_SESSION['favorisValide'] = false;
-        $_SESSION['URLInvalide'] = 'L`url donnée est invalide';
-    }
+    Acteurs()->update($acteur);
 
-    if(!$_SESSION['favorisValide'])
-    {
-        header('EditForm.php');
-        exit();
-    }
-    else
-    {
-        replaceBookmark($bookmarks);
-    }
+    DB()->endTransaction();
 }
 
-header('Location:List.php');
-exit();
+//header('Location:List.php');
+//exit();
 ?>

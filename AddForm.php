@@ -35,7 +35,7 @@ $content .= html_submit("ajouter", "Ajouter");
 $content .= html_close("form");
 $content .= html_close("div");
 $content .= html_close("hr");
-$content .= "<a href='List.php'><img src='images/Back.png' alt='Retour en arrière'>".html_close("a");
+$content .= "<a href='List.php'><img src='images/icons/ICON_Left_Click.png' alt='Retour en arrière'>".html_close("a");
 
 include_once 'MasterPage.php';
 ?>
