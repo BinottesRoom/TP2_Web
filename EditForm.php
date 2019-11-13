@@ -4,7 +4,6 @@ require_once 'DAL/classesDB.php';
 require 'utilities/htmlHelper.php';
 require_once 'imageHelper.php';
 
-
 $id = $_GET['id'];  
 $acteur = Acteurs()->get($id);
 $nom = $acteur['Name'];
@@ -18,28 +17,26 @@ $content .="Modifier $nom";
 $content .= html_close("h3");
 $content .= html_close("div");
 //open form
-$content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='GET' action='Edit.php' enctype='multipart/form-data'>";
+$content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='POST' action='Edit.php' enctype='multipart/form-data'>";
 $content .= html_Hidden("id", $id);
+$content .= html_Hidden("GUIDselected", $url);
 $content .= html_open("b").html_label("Name", "Name").html_close("b");
 $content .="<br>";
 $content .= html_textbox("Name", "Name", $nom)."<br>";
 
 $content .= html_open("b").html_label("Country", "Country").html_close("b");
 $content .= "<br>";
-$content .= "<select name='pays'>";
+$content .= "<select name='pays' value='$country'>";
 $paysAAfficher = Countries()->get();
 DB()->beginTransaction();
+$content .="<option value='$country'>$country</option>";
 foreach($paysAAfficher as $pays)
 {
     if ($pays[1] != $country)
     {
         $content .="<option value='$pays[1]'>$pays[1]</option>";
-    }
-    else
-    {
-        $content .="<option value='$country>$country</option>";
-    }
-    
+        
+    }   
 }
 DB()->endTransaction();
 $content .= "</select>"."<br>";

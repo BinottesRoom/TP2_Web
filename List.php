@@ -28,7 +28,7 @@ function showActeurs($acteurs)
     $addToContent = "";
     if (isset($acteurs)) 
     {
-        $addToContent .= "<div class='bookmarks-row-layout'>";
+        $addToContent .= "<div class='bookmarks-row-layout'>";  
         foreach($acteurs as $acteur)
         {   
             $id = $acteur['Id'];
