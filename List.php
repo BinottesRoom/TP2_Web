@@ -31,7 +31,7 @@ function showActeurs($acteurs)
         $addToContent .= "<div class='bookmarks-row-layout'>";;
         $id = 1;
         foreach($acteurs as $acteur)
-        {
+        {   
             
             $url = ImageHelper()->getURL($acteur['ActeurGUID']);
             $addToContent .= "<div><img class='smallPhoto' src='$url'></div>";
