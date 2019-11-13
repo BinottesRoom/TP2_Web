@@ -4,19 +4,22 @@ require_once 'DAL/classesDB.php';
 require 'utilities/htmlHelper.php';
 require_once 'imageHelper.php';
 
-$id = $_GET['id'];
+
+$id = $_GET['id'];  
 $acteur = Acteurs()->get($id);
 $nom = $acteur['Name'];
 $date = $acteur['Birth'];
 $country = $acteur['Country'];
-$url = ImageHelper()->getURL($acteur['ActeurGUID']);
+$url = $acteur['ActeurGUID'];
 
 $content = "<div style=\"display:inline\">";
 $content .= html_open("h3");
 $content .="Modifier $nom";
 $content .= html_close("h3");
 $content .= html_close("div");
-$content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='POST' action='Edit.php' enctype='multipart/form-data'>";
+//open form
+$content .= "<hr>".html_open("div")."<form id='bookmarkForm' method='GET' action='Edit.php' enctype='multipart/form-data'>";
+$content .= html_Hidden("id", $id);
 $content .= html_open("b").html_label("Name", "Name").html_close("b");
 $content .="<br>";
 $content .= html_textbox("Name", "Name", $nom)."<br>";

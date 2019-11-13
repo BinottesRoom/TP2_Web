@@ -28,11 +28,10 @@ function showActeurs($acteurs)
     $addToContent = "";
     if (isset($acteurs)) 
     {
-        $addToContent .= "<div class='bookmarks-row-layout'>";;
-        $id = 1;
+        $addToContent .= "<div class='bookmarks-row-layout'>";
         foreach($acteurs as $acteur)
         {   
-            
+            $id = $acteur['Id'];
             $url = ImageHelper()->getURL($acteur['ActeurGUID']);
             $addToContent .= "<div><img class='smallPhoto' src='$url'></div>";
             $addToContent .= '<div>'.$acteur['Name'].'</div>';
@@ -42,7 +41,6 @@ function showActeurs($acteurs)
                                    <a href='DetailForm.php?id=$id'><img class='icon' src='images/icons/ICON_Details_Click.png' alt='Details'></a>
                                    <a href='DeleteForm.php?id=$id'><img class='icon' src='images/icons/ICON_Delete_Neutral.png' alt='Delete'></a>
                              </div>";
-            $id = $id + 1;
         }
         $addToContent .= '</div>';
     }

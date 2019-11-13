@@ -8,16 +8,17 @@ function effacerTables() {
 }
 include_once 'utilities/form.php';
 
-$id = $_GET['id'];
-if(isset($_POST['edit']))
+
+if(isset($_GET['edit']))
 {
     //effacerTables();
     DB()->beginTransaction();
-
-    $acteur['Name']=$_POST['Name'];  
-    $acteur['Country']=$_POST['pays']; 
-    $acteur['Birth']=$_POST['Birth'];
-    $acteur['ActeurGUID'] = ImageHelper()->upLoadImage($_POST['ActeurGUID']);
+    $acteur['Id']=$_GET['id'];
+    $acteur['Name']=$_GET['Name'];  
+    $acteur['Country']=$_GET['pays']; 
+    $acteur['Birth']=$_GET['Birth'];
+    //$fuckingGUID = ImageHelper()->upLoadImage($_GET['ActeurGUID']);
+    $acteur['ActeurGUID'] = ImageHelper()->upLoadImage($_GET['ActeurGUID']);
 
     Acteurs()->update($acteur);
 
