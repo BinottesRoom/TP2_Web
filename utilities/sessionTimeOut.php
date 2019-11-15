@@ -1,7 +1,7 @@
 <?php
 // Par défaut l'expiration d'une session est de 1440 secondes
 // http://php.net/session.gc-maxlifetime
-//
+//  
 
 function set_Session_Timeout($timeout, $returnPage) {
     if(isset($_SESSION['timeout'])) {

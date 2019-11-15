@@ -33,7 +33,7 @@ date_default_timezone_set('US/Eastern');
 //      - double sera considéré comme étant de type DOUBLE
 //
 //  Si l'indentificateur d'un membre
-//      - commence par "_" il sera ignoré
+//      - commence par _ il sera ignorer
 //      - égal à "Id" il sera considéré comme la clé primaire
 //      - contient "Id" il sera considéré comme une clé étrangère
 //      - contient "Date" il sera considéré comme un champ de type DateTime
@@ -213,7 +213,7 @@ abstract class TableAccess {
         }
         private function create_if_Does_Not_Exist () {
             $tableName = $this->tableName();
-            $sql = "select * from $tableName";
+            $sql = "DESCRIBE $tableName";
             $exist = $this->_dataBaseAccess->querySqlCmd($sql);
             if (!$exist) {
                 $this->_dataBaseAccess->nonQuerySqlCmd($this->create_Table());
@@ -497,8 +497,8 @@ final class DataBaseAccess {
             try {
                 $this->DBConnect();
                 $this->conn->exec($sql);
-                $this->commit();
                 $recordsAffected = $this->lastInsertedId();
+                $this->commit();
             }
             catch(PDOException $e) {
                 $this->rollBack();

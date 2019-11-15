@@ -8,10 +8,10 @@ function years($n){ return days(365.25) * $n; }
 function cookie_get($name, $default = null){
     if (isset($_COOKIE[$name]))
         return $_COOKIE[$name];
-    return $default;
+    return $default; 
 }
 
-function cookie_set($name, $value, $duration) { //créé le cookie
+function cookie_set($name, $value, $duration) {
     setcookie($name, $value, time() + $duration);
 }
 
