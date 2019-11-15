@@ -105,6 +105,67 @@ final class Movies extends TableAccess{
         }
         return self::$_instance;
     }
+
+    public function emptyMovie() {
+        $emptyMovie['Id'] = 0;
+        $emptyMovie['Title'] = '';
+        $emptyMovie['Synopsis'] = '';
+        $emptyMovie['CountrieId'] = 0;
+        $emptyMovie['Year'] = date("Y-m-d H:i:s");
+        $emptyMovie['Author'] = '';
+        $emptyMovie['StyleId'] = 0;
+        $emptyMovie['PosterGUID'] = '';
+        return $emptyActor;
+    }
+    public function getHtmlView($movieRecord){
+        $htmlView['Id'] = $movieRecord['Id'];
+        $htmlView['Title'] = $movieRecord['Title'];
+        $htmlView['CountrieId'] = Countries()->get($movieRecord['CountrieId'])['Name'];
+        $dateOnly = explode(' ', $movieRecord['Year'])[0];
+        $htmlView['Year'] = $dateOnly;
+        $htmlView['Author']  = $movieRecord['Author'];
+        $htmlView['StyleId'] = Styles()->get($movieRecord['StyleId'])['Name'];
+        $photoURL = $this->_imageHelper->getURL($movieRecord['PosterGUID']);
+        $htmlView['PosterGUID'] = "<img src='$photoURL' class='smallActorPhoto'>";
+        return $htmlView;
+    }
+
+    public function getHtmlForm($id = 0){
+        $editMode = ($id !== 0 );
+        $movieRecord =  $this->emptyMovie();
+
+        if ($editMode) {
+            $html = html_beginForm('','movieForm', true);
+            $html.= html_Hidden('Id', $id);
+            $actorRecord = $this->get($id);
+            $html.= html_Hidden('PosterGUID', $movieRecord['PosterGUID']);
+        } else {
+            $html = html_beginForm('','movieForm', true);
+        }
+        
+        $html.="<div class='createFormLayout'>";
+
+            //// Photo uploader
+            $html.="<div>";
+                $html.= $this->_imageHelper->html_ImageUploader($movieRecord['PosterGUID']);
+            $html.="</div>";
+
+            //// Name, CountrieId, BirthDate
+            $html.="<div>";
+                $html.= html_label('Nom', 'Name');
+                $html.= html_textbox('Name', 'Nom', $actorRecord['Name']);
+                $html.= html_label('Pays', 'CountrieId');
+                $html.= Countries()->htmlComboBox($actorRecord['CountrieId']);
+                $dateOnly = explode(' ', $actorRecord['BirthDate'])[0];
+                $html.= html_datepicker('BirthDate', 'Naissance', $dateOnly);
+                $html.= html_submit('Submit', 'Enregistrer', 'form-comtrol important');
+            $html.="</div>";
+            
+
+        $html.="</div>";
+        $html.= html_closeForm();
+        return $html;
+    }
     ///////////////////////////////////////////////////////////
 }
 final class Actors extends TableAccess{
