@@ -3,7 +3,7 @@
     include_once 'utilities/redirection.php';
     if (isset($_POST['Submit'])){
         Movies()->createFromForm();
-        redirect("listActors.php");
+        redirect("listMovies.php");
     }
 
 $viewtitle = "Ajout de films";
