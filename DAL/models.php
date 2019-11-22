@@ -149,7 +149,7 @@ final class Movies extends TableAccess{
             $html.="<div>";
                 $html.= $this->_imageHelper->html_ImageUploader($movieRecord['PosterGUID']);
             $html.="</div>";
-
+            
             //// Name, CountrieId, BirthDate
             $html.="<div>";
                 $html.= html_label('Titre', 'Title');
@@ -157,13 +157,15 @@ final class Movies extends TableAccess{
                 $html.= html_label('Pays', 'CountrieId');
                 $html.= Countries()->htmlComboBox($movieRecord['CountrieId']);
                 $dateOnly = explode(' ', $movieRecord['Year'])[0];
-                $html.= html_datepicker('Year', 'Année', $dateOnly);
-                $html.= html_label('Auteur', 'Author', $movieRecord['Author']);
-                $html.= html_textbox('Author', 'Auteur');
+                $html .= html_label('Année', 'Year');
+                $html .= html_textbox('Year', 'Année', $dateOnly);
+                //$html.= html_datepicker('Year', 'Année', $dateOnly);
+                $html.= html_label('Auteur', 'Author');
+                $html.= html_textbox('Author', 'Auteur', $movieRecord['Author']);
                 $html.= html_label('Style', 'Style');
                 $html.= Styles()->htmlComboBox($movieRecord['StyleId']);
                 $html.= html_label('Synopsis', 'Synopsis');
-                $html.= html_textarea('Synopsis', 'Entrez un resumé ici', 5);
+                $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis']);
                 $html.= html_submit('Submit', 'Enregistrer', 'form-comtrol important');
             $html.="</div>";
             
@@ -202,10 +204,11 @@ final class Movies extends TableAccess{
                 $html .= html_header($movieRecord['Title'],1);
                 $html .= html_header($movieHtmlViewData['CountrieId'],3);
                 $html .= html_header($movieHtmlViewData['Year'],3);
+                $html .= html_header($movieRecord['Author'], 3);
                 $html .= html_flashButton('iconEdit',"editMovieForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
-                //$html .= html_textarea();
-            $html.="</div>";
+                $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
+            $html .= "</div>";
 
                        
         $html.="</div>";
@@ -217,9 +220,9 @@ final class Movies extends TableAccess{
             $id = intval($_POST['Id']);
             $newMovie['Id'] = $id;
             $newMovie['Title'] = $_POST['Title'];
-            $newMovie['Synopsis'] = $_POST['Synopsis'];
+            $newMovie['Synopsis'] = $_POST['synopsis'];
             $newMovie['CountrieId'] = intval($_POST['CountrieId']);
-            $newMovie['Year'] = $_POST['Year'];
+            $newMovie['Year'] = $_POST['Year']." 00:00:00";
             $newMovie['Author'] = $_POST['Author'];
             $newMovie['StyleId'] = $_POST['StyleId'];
             $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage($_POST['PosterGUID']);
