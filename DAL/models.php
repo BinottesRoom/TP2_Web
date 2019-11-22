@@ -393,8 +393,11 @@ $viewContent .= "</form>";
             $newActor['CountrieId'] = $_POST['CountrieId'];
             $newActor['BirthDate'] = $_POST['BirthDate'];
             $newActor['PhotoGUID'] = $this->_imageHelper->upLoadImage();
-            $newActor['SelectedItems'] = $_POST['SelectedItems'];
+            $newActor['SelectedItems'] = null;
             $newActorId = $this->insert($newActor);
+            if(isset($_POST['SelectedItems']))
+                $newActor['SelectedItems'] =$_POST['SelectedItems'];
+            Casts()->saveFormMoviesSelection($newActorId,$newActor['SelectedItems']);
         }
     }
     public function editFromForm(){
@@ -406,6 +409,9 @@ $viewContent .= "</form>";
             $newActor['BirthDate'] = $_POST['BirthDate']." 00:00:00";
             $newActor['PhotoGUID'] = $this->_imageHelper->upLoadImage($_POST['PhotoGUID']);
             $this->update($newActor);
+            if(isset($_POST['SelectedItems']))
+            $newActor['SelectedItems'] =$_POST['SelectedItems'];
+            Casts()->saveFormMoviesSelection($newActor['Id'],$newActor['SelectedItems']);
         }
     }
     public function deleteFromForm(){
@@ -474,10 +480,15 @@ final class Casts extends TableAccess{
         return $viewContent;
     }
 
+    function removeMovies($acteurID)
+    {
+        $this->deleteWhere("ActorId = $acteurID");
+    }
+
     function MoviesToItems(){
         $items = [];
          foreach(Movies()->get() as $movie){
-            $items[$movie['Id']] = $movie['Name'];  
+            $items[$movie['Id']] = $movie['Title'];  
         }
         return $items;
     }
@@ -489,6 +500,16 @@ final class Casts extends TableAccess{
             $items[$movie['Id']] = $movie['Name'];  
         }
         return $items;
+    }
+
+    function saveFormMoviesSelection($actorId,$selectedItemsId) {
+        $this->removeMovies($actorId);
+        $selection['Id'] = 0;
+        $selection['ActorId'] = $actorId;
+        foreach($selectedItemsId as $idMovies) {
+            $selection['MovieId'] = $idMovies;
+            Casts()->insert($selection);
+        }
     }
     ///////////////////////////////////////////////////////////
 }
