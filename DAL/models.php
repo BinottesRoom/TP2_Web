@@ -115,7 +115,7 @@ final class Movies extends TableAccess{
         $emptyMovie['Author'] = '';
         $emptyMovie['StyleId'] = 0;
         $emptyMovie['PosterGUID'] = '';
-        return $emptyActor;
+        return $emptyMovie;
     }
     public function getHtmlView($movieRecord){
         $htmlView['Id'] = $movieRecord['Id'];
@@ -152,12 +152,18 @@ final class Movies extends TableAccess{
 
             //// Name, CountrieId, BirthDate
             $html.="<div>";
-                $html.= html_label('Nom', 'Name');
-                $html.= html_textbox('Name', 'Nom', $actorRecord['Name']);
+                $html.= html_label('Titre', 'Title');
+                $html.= html_textbox('Title', 'Titre', $movieRecord['Title']);
                 $html.= html_label('Pays', 'CountrieId');
-                $html.= Countries()->htmlComboBox($actorRecord['CountrieId']);
-                $dateOnly = explode(' ', $actorRecord['BirthDate'])[0];
-                $html.= html_datepicker('BirthDate', 'Naissance', $dateOnly);
+                $html.= Countries()->htmlComboBox($movieRecord['CountrieId']);
+                $dateOnly = explode(' ', $movieRecord['Year'])[0];
+                $html.= html_datepicker('Year', 'Année', $dateOnly);
+                $html.= html_label('Auteur', 'Author', $movieRecord['Author']);
+                $html.= html_textbox('Author', 'Auteur');
+                $html.= html_label('Style', 'Style');
+                $html.= Styles()->htmlComboBox($movieRecord['StyleId']);
+                $html.= html_label('Synopsis', 'Synopsis');
+                $html.= html_textarea('Synopsis', 'Entrez un resumé ici', 5);
                 $html.= html_submit('Submit', 'Enregistrer', 'form-comtrol important');
             $html.="</div>";
             
@@ -167,6 +173,20 @@ final class Movies extends TableAccess{
         return $html;
     }
     ///////////////////////////////////////////////////////////
+
+    public function createFromForm(){   
+        if (isset($_POST['Submit'])){
+            $newMovie['Id'] = 0;
+            $newMovie['Title'] = $_POST['Title'];
+            $newMovie['Synopsis'] = $_POST['Synopsis'];
+            $newMovie['CountrieId'] = $_POST['CountrieId'];
+            $newMovie['Year'] = $_POST['Year'];
+            $newMovie['Author'] = $_POST['Author'];
+            $newMovie['StyleId'] = $_POST['StyleId'];
+            $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage();
+            $newMovieId = $this->insert($newMovie);
+        }
+    }
 }
 final class Actors extends TableAccess{
     public $Id;
