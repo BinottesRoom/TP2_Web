@@ -495,8 +495,8 @@ final class Casts extends TableAccess{
 
     function CastsMoviesToItems($actorId){
         $items=[];
-        foreach(Casts()->selectWhere("Id = $actorId") as $cast){
-            $movie = Movies()->get($cast['MoviesId']);
+        foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
+            $movie = Movies()->get($cast['Id']);
             $items[$movie['Id']] = $movie['Name'];  
         }
         return $items;
