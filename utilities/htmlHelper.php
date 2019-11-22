@@ -53,14 +53,22 @@ function html_textbox($name, $placeholder, $value = '', $css='form-control') {
     class='$css'>";
 }
 
-function html_textarea($name, $placeholder, $rows, $value = '', $css='form-control') {
-    return
-    "<textarea 
+function html_textarea($name, $placeholder, $rows, $value = '', $bool = false, $css='form-control') {
+
+    $textarea = "<textarea 
     name='$name' 
     rows='$rows' 
     id='$name' 
     placeholder=\"$placeholder\" 
-    class='$css'>$value</textarea>";
+    class='$css'";
+    if ($bool)
+    {
+        $textarea .= " readonly";
+    }
+    $textarea .= ">$value</textarea>";
+
+    return $textarea;
+    
 }
 
 function html_datepicker($name, $placeholder, $value = '', $css='form-control') {
