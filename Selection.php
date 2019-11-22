@@ -1,5 +1,5 @@
 <?php
-    include_once 'DAL/models.php';
+    //include_once 'DAL/models.php';
     include_once 'DAL/DBA.php';
     include_once 'utilities/selectionUtilities.php';
 
