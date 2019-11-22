@@ -206,6 +206,7 @@ final class Movies extends TableAccess{
                 $html .= html_header($movieHtmlViewData['CountrieId'],3);
                 $html .= html_header($movieHtmlViewData['Year'],3);
                 $html .= html_header($movieRecord['Author'], 3);
+                $html .= html_header($movieRecord['Styleid'][['Name']]);
                 $html .= html_flashButton('iconEdit',"editMovieForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
                 $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
