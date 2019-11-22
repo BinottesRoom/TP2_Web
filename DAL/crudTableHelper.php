@@ -19,7 +19,7 @@ class CRUDTableHelper{
             $this->sortedKey = '';
             $this->previousSortedKey = '';
             $this->tableAccess = $tableAccess;            
-            $this->captionKey = 0 ;
+            $this->captionKey = '' ;
             $this->captions = [];              
             $this->sortables = [];
         }
@@ -136,7 +136,7 @@ class CRUDTableHelper{
                 foreach($this->keys as $key){
                     $html.= $this->makeCell($htmlViewRecord[$key]);
                 }
-                $html .= $this->makeEditButton($htmlViewRecord['Id'], 'Modifier '.$htmlViewRecord[$this->captionKey]);
+            $html .= $this->makeEditButton($htmlViewRecord['Id'], 'Modifier '.$htmlViewRecord[$this->captionKey]);
                 $html .= $this->makeDetailsButton($htmlViewRecord['Id'], 'Détails '.$htmlViewRecord[$this->captionKey]);
                 $html .= $this->makeDeleteButton($htmlViewRecord['Id'], 'Effacer '.$htmlViewRecord[$this->captionKey]);
                 $html.="</div>";

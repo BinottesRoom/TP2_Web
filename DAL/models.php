@@ -138,7 +138,7 @@ final class Movies extends TableAccess{
         if ($editMode) {
             $html = html_beginForm('','movieForm', true);
             $html.= html_Hidden('Id', $id);
-            $actorRecord = $this->get($id);
+            $movieRecord = $this->get($id);
             $html.= html_Hidden('PosterGUID', $movieRecord['PosterGUID']);
         } else {
             $html = html_beginForm('','movieForm', true);
@@ -173,7 +173,6 @@ final class Movies extends TableAccess{
         $html.= html_closeForm();
         return $html;
     }
-    ///////////////////////////////////////////////////////////
 
     public function createFromForm(){   
         if (isset($_POST['Submit'])){
@@ -186,6 +185,46 @@ final class Movies extends TableAccess{
             $newMovie['StyleId'] = $_POST['StyleId'];
             $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage();
             $newMovieId = $this->insert($newMovie);
+        }
+    }
+
+    public function getDetailsHtml($id){
+        $movieRecord = $this->get($id);
+        $movieHtmlViewData = $this->getHtmlView($movieRecord);
+
+        $html = "<div class='detailsLayout'>";
+
+            $html.="<div>";
+                $posterURL = $this->_imageHelper->getURL($movieRecord['PosterGUID']);
+                $html .= html_image($posterURL, 'poster');
+            $html.="</div>";
+    
+            $html .="<div>";
+                $html .= html_header($movieRecord['Title'],1);
+                $html .= html_header($movieHtmlViewData['CountrieId'],3);
+                $html .= html_header($movieHtmlViewData['Year'],3);
+                $html .= html_flashButton('iconEdit',"editMovieForm.php?id=$id", "éditer", "bottom");
+                $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
+                //$html .= html_textarea();
+            $html.="</div>";
+
+                       
+        $html.="</div>";
+        return $html;
+    }
+
+    public function editFromForm(){
+        if (isset($_POST['Submit'])){
+            $id = intval($_POST['Id']);
+            $newMovie['Id'] = $id;
+            $newMovie['Title'] = $_POST['Title'];
+            $newMovie['Synopsis'] = $_POST['Synopsis'];
+            $newMovie['CountrieId'] = intval($_POST['CountrieId']);
+            $newMovie['Year'] = $_POST['Year'];
+            $newMovie['Author'] = $_POST['Author'];
+            $newMovie['StyleId'] = $_POST['StyleId'];
+            $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage($_POST['PosterGUID']);
+            $this->update($newMovie);
         }
     }
 }
