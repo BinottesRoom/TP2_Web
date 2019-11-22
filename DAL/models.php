@@ -1,4 +1,5 @@
 <?php
+require_once 'C:\wamp64\www\TP2_Web\TP2_Web\Selection.php';
 include_once 'DBA.php';
 include_once 'imageHelper.php';
 include_once 'utilities/htmlHelper.php';
@@ -229,12 +230,14 @@ final class Actors extends TableAccess{
     public function getHtmlForm($id = 0){
         $editMode = ($id !== 0 );
         $actorRecord =  $this->emptyActor();
-
+        $allmovieitems = [];//
+        $allmovie = Casts()->MoviesToItems();//
         if ($editMode) {
             $html = html_beginForm('','actorForm', true);
             $html.= html_Hidden('Id', $id);
             $actorRecord = $this->get($id);
             $html.= html_Hidden('PhotoGUID', $actorRecord['PhotoGUID']);
+            $allmovieitems = Casts()->CastsMoviesToItems($id);//
         } else {
             $html = html_beginForm('','actorForm', true);
         }
@@ -257,11 +260,44 @@ final class Actors extends TableAccess{
                 $html.= html_submit('Submit', 'Enregistrer', 'form-comtrol important');
             $html.="</div>";
             
-
+            $html .= Casts()->getHtmlForm($allmovie,$allmovieitems);//
         $html.="</div>";
         $html.= html_closeForm();
         return $html;
     }
+    /*
+            DB()->beginTransaction();
+        Selections()->deleteAll();//-----------------
+        if (isset($_POST['SelectedItems']))
+            saveFormSelection($_POST['SelectedItems']);
+        DB()->endTransaction();
+    // produire les items qui seront présentés dans les <select...> du formulaire
+$selectedItems = CastsActorsToItems();
+$movieItems = MoviesToItems()($selectedItems);
+
+// pruduction du html constituant le formulaire avec les deux <select...>
+$viewContent="";  
+$viewContent .= "<form method='post'>";
+    $viewContent .= "<table>";
+        $viewContent .= "<tr>";
+            $viewContent .= "<td>";
+                $viewContent .= makeSelectedList($selectedItems);
+            $viewContent .= "</td>";
+            $viewContent .= "<td>";
+                // il faut utiliser le fichier css/flashButtons.css pour 
+                // que les <div> de classes MoveLeft et MoveRight se comportent
+                // comme des boutons flash
+                $viewContent .= "<div id='MoveLeft'  ></div>"; 
+                $viewContent .= "<div id='MoveRight' ></div>";
+            $viewContent .= "</td>";
+            $viewContent .= "<td>";
+                $viewContent .= makeUnselectedList($movieItems, $selectedItems);
+            $content .= "</td>";
+        $viewContent .= "</tr>";
+    $viewContent .= "</table>";
+    $viewContent .= "<input type='submit' name='submit' value='Enregistrer'>";
+$viewContent .= "</form>";
+?>*/
 
     public function getDetailsHtml($id){
         $actorRecord = $this->get($id);
@@ -318,6 +354,7 @@ final class Actors extends TableAccess{
             $newActor['CountrieId'] = $_POST['CountrieId'];
             $newActor['BirthDate'] = $_POST['BirthDate'];
             $newActor['PhotoGUID'] = $this->_imageHelper->upLoadImage();
+            $newActor['SelectedItems'] = $_POST['SelectedItems'];
             $newActorId = $this->insert($newActor);
         }
     }
@@ -371,6 +408,48 @@ final class Casts extends TableAccess{
             self::$_instance = new $calledClass($dataBaseAccess);  
         }
         return self::$_instance;
+    }
+
+    public function getHtmlForm($movieItems,$selectedItems){//made by juju
+        $viewContent="";  
+  /*      $viewContent .= "<form method='post'>";*/
+            $viewContent .= "<table>";
+                $viewContent .= "<tr>";
+                    $viewContent .= "<td>";
+                        $viewContent .= makeSelectedList($selectedItems);
+                    $viewContent .= "</td>";
+                    $viewContent .= "<td>";
+                        // il faut utiliser le fichier css/flashButtons.css pour 
+                        // que les <div> de classes MoveLeft et MoveRight se comportent
+                        // comme des boutons flash
+                        $viewContent .= "<div id='MoveLeft'  ></div>"; 
+                        $viewContent .= "<div id='MoveRight' ></div>";
+                    $viewContent .= "</td>";
+                    $viewContent .= "<td>";
+                        $viewContent .= makeUnselectedList($movieItems, $selectedItems);
+                    $viewContent .= "</td>";
+                $viewContent .= "</tr>";
+            $viewContent .= "</table>";
+        /*    $viewContent .= "<input type='submit' name='submit' value='Enregistrer'>";
+        $viewContent .= "</form>";*/
+        return $viewContent;
+    }
+
+    function MoviesToItems(){
+        $items = [];
+         foreach(Movies()->get() as $movie){
+            $items[$movie['Id']] = $movie['Name'];  
+        }
+        return $items;
+    }
+
+    function CastsMoviesToItems($actorId){
+        $items=[];
+        foreach(Casts()->selectWhere("Id = $actorId") as $cast){
+            $movie = Movies()->get($cast['MoviesId']);
+            $items[$movie['Id']] = $movie['Name'];  
+        }
+        return $items;
     }
     ///////////////////////////////////////////////////////////
 }
