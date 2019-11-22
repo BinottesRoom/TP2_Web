@@ -6,7 +6,7 @@ session_start();
 
 if (!isset($_SESSION["MoviesCRUDTableHelper"])) {
     $MoviesCRUDTableHelper = new CRUDTableHelper(Movies());
-    $MoviesCRUDTableHelper->setcaptionKey('Name');
+    $MoviesCRUDTableHelper->setcaptionKey('Title');
                                       //clé      ce qu'on veut voir
     $MoviesCRUDTableHelper->addColumn("PosterGUID","Poster",false);
     $MoviesCRUDTableHelper->addColumn("Title","Titre",true);

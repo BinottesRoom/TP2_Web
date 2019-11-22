@@ -172,7 +172,6 @@ final class Movies extends TableAccess{
         $html.= html_closeForm();
         return $html;
     }
-    ///////////////////////////////////////////////////////////
 
     public function createFromForm(){   
         if (isset($_POST['Submit'])){
@@ -186,6 +185,30 @@ final class Movies extends TableAccess{
             $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage();
             $newMovieId = $this->insert($newMovie);
         }
+    }
+
+    public function getDetailsHtml($id){
+        $movieRecord = $this->get($id);
+        $movieHtmlViewData = $this->getHtmlView($movieRecord);
+
+        $html = "<div class='detailsLayout'>";
+
+            $html.="<div>";
+                $posterURL = $this->_imageHelper->getURL($movieRecord['PosterGUID']);
+                $html .= html_image($posterURL, 'poster');
+            $html.="</div>";
+    
+            $html .="<div>";
+                $html .= html_header($movieRecord['Title'],1);
+                $html .= html_header($movieHtmlViewData['CountrieId'],3);
+                $html .= html_header($movieHtmlViewData['Year'],3);
+                $html .= html_flashButton('iconEdit',"editMovieForm.php?id=$id", "éditer", "bottom");
+                $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
+            $html.="</div>";
+
+                       
+        $html.="</div>";
+        return $html;
     }
 }
 final class Actors extends TableAccess{
