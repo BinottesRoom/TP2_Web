@@ -1,5 +1,4 @@
 <?php
-require_once 'C:\wamp64\www\TP2_Web\TP2_Web\Selection.php';
 include_once 'DBA.php';
 include_once 'imageHelper.php';
 include_once 'utilities/htmlHelper.php';
@@ -206,7 +205,7 @@ final class Movies extends TableAccess{
                 $html .= html_header($movieHtmlViewData['CountrieId'],3);
                 $html .= html_header($movieHtmlViewData['Year'],3);
                 $html .= html_header($movieRecord['Author'], 3);
-                $html .= html_header($movieRecord['Styleid'][['Name']]);
+                $html .= html_header($movieRecord['StyleId'][[]]); //Probleme a afficher StyleId
                 $html .= html_flashButton('iconEdit',"editMovieForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
                 $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
@@ -231,6 +230,42 @@ final class Movies extends TableAccess{
             $this->update($newMovie);
         }
     }
+    
+    public function getDeleteHtmlForm($id){
+        $movieRecord = $this->get($id);
+        $movieHtmlViewData = $this->getHtmlView($movieRecord);
+
+        $html = "<div class='deleteLayout'>";
+
+            $html.="<div>";
+                $posterURL = $this->_imageHelper->getURL($movieRecord['PosterGUID']);
+                $html .= html_image($posterURL, 'poster');
+            $html.="</div>";
+    
+            $html .="<div>";
+                $html .= html_header($movieHtmlViewData['Title'],1);
+                $html .= html_header($movieHtmlViewData['CountrieId'],3);
+                $html .= html_header($movieHtmlViewData['Year'],3);
+                $html .= html_header($movieRecord['Author'], 3);
+                $html .= html_header($movieRecord['StyleId'][['Name']]); //Probleme a afficher StyleId
+                $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
+
+                $html .= html_beginForm('','deleteMovieForm');
+                    $html .= html_Hidden('Id', $id);
+                    $html .= html_submit('Submit', 'Effacer', 'form-comtrol important'); 
+                $html .= html_closeForm();
+            $html.="</div>";
+
+        $html.="</div>";
+        return $html;
+    }
+
+    public function deleteFromForm(){
+        if (isset($_POST['Submit'])){
+            $id = intval($_POST['Id']);
+            $this->delete($id);
+        }
+    } 
 }
 final class Actors extends TableAccess{
     public $Id;
