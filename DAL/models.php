@@ -1,5 +1,4 @@
 <?php
-require_once 'C:\wamp64\www\TP2_Web\TP2_Web\Selection.php';
 include_once 'DBA.php';
 include_once 'imageHelper.php';
 include_once 'utilities/htmlHelper.php';
