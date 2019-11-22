@@ -494,9 +494,8 @@ final class Casts extends TableAccess{
         return self::$_instance;
     }
 
-    public function getHtmlForm($movieItems,$selectedItems){//made by juju
+    public function getHtmlForm($movieItems,$selectedItems){
         $viewContent="";  
-  /*      $viewContent .= "<form method='post'>";*/
             $viewContent .= "<table>";
                 $viewContent .= "<tr>";
                     $viewContent .= "<td>";
@@ -514,8 +513,6 @@ final class Casts extends TableAccess{
                     $viewContent .= "</td>";
                 $viewContent .= "</tr>";
             $viewContent .= "</table>";
-        /*    $viewContent .= "<input type='submit' name='submit' value='Enregistrer'>";
-        $viewContent .= "</form>";*/
         return $viewContent;
     }
 
@@ -535,8 +532,8 @@ final class Casts extends TableAccess{
     function CastsMoviesToItems($actorId){
         $items=[];
         foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
-            $movie = Movies()->get($cast['Id']);
-            $items[$movie['Id']] = $movie['Name'];  
+            $movie = Movies()->get($cast['MovieId']);
+            $items[$movie['Id']] = $movie['Title'];  
         }
         return $items;
     }
