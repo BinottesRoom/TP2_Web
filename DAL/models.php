@@ -553,6 +553,31 @@ final class Casts extends TableAccess{
             Casts()->insert($selection);
         }
     }
+
+    function ActorsToItems(){
+        $items = [];
+         foreach(Actors()->get() as $actor){
+            $items[$actor['Id']] = $actor['Name'];  
+        }
+        return $items;
+    }
+
+    function CastsActorsToItems($movieId){
+        $items=[];
+        foreach(Casts()->selectWhere("Id = $movieId") as $cast){
+            $actor = Actors()->get($cast['ActorId']);
+            $items[$actor['Id']] = $actor['Name'];  
+        }
+        return $items;
+    }
+
+    function saveFormActorsSelection($selectedItemsId) {
+        $selection['Id'] = 0;
+        foreach($selectedItemsId as $idActors) {
+            $selection['ActorId'] = $idActors;
+            Casts()()->insert($selection);
+        }
+    }
     ///////////////////////////////////////////////////////////
 }
 function DB() {
