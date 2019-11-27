@@ -349,39 +349,6 @@ final class Actors extends TableAccess{
         $html.= html_closeForm();
         return $html;
     }
-    /*
-            DB()->beginTransaction();
-        Selections()->deleteAll();//-----------------
-        if (isset($_POST['SelectedItems']))
-            saveFormSelection($_POST['SelectedItems']);
-        DB()->endTransaction();
-    // produire les items qui seront présentés dans les <select...> du formulaire
-$selectedItems = CastsActorsToItems();
-$movieItems = MoviesToItems()($selectedItems);
-
-// pruduction du html constituant le formulaire avec les deux <select...>
-$viewContent="";  
-$viewContent .= "<form method='post'>";
-    $viewContent .= "<table>";
-        $viewContent .= "<tr>";
-            $viewContent .= "<td>";
-                $viewContent .= makeSelectedList($selectedItems);
-            $viewContent .= "</td>";
-            $viewContent .= "<td>";
-                // il faut utiliser le fichier css/flashButtons.css pour 
-                // que les <div> de classes MoveLeft et MoveRight se comportent
-                // comme des boutons flash
-                $viewContent .= "<div id='MoveLeft'  ></div>"; 
-                $viewContent .= "<div id='MoveRight' ></div>";
-            $viewContent .= "</td>";
-            $viewContent .= "<td>";
-                $viewContent .= makeUnselectedList($movieItems, $selectedItems);
-            $content .= "</td>";
-        $viewContent .= "</tr>";
-    $viewContent .= "</table>";
-    $viewContent .= "<input type='submit' name='submit' value='Enregistrer'>";
-$viewContent .= "</form>";
-?>*/
 
     public function getDetailsHtml($id){
         $actorRecord = $this->get($id);
@@ -551,6 +518,31 @@ final class Casts extends TableAccess{
         foreach($selectedItemsId as $idMovies) {
             $selection['MovieId'] = $idMovies;
             Casts()->insert($selection);
+        }
+    }
+
+    function ActorsToItems(){
+        $items = [];
+         foreach(Actors()->get() as $actor){
+            $items[$actor['Id']] = $actor['Name'];  
+        }
+        return $items;
+    }
+
+    function CastsActorsToItems($movieId){
+        $items=[];
+        foreach(Casts()->selectWhere("Id = $movieId") as $cast){
+            $actor = Actors()->get($cast['ActorId']);
+            $items[$actor['Id']] = $actor['Name'];  
+        }
+        return $items;
+    }
+
+    function saveFormActorsSelection($selectedItemsId) {
+        $selection['Id'] = 0;
+        foreach($selectedItemsId as $idActors) {
+            $selection['ActorId'] = $idActors;
+            Casts()()->insert($selection);
         }
     }
     ///////////////////////////////////////////////////////////
