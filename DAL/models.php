@@ -133,12 +133,15 @@ final class Movies extends TableAccess{
     public function getHtmlForm($id = 0){
         $editMode = ($id !== 0 );
         $movieRecord =  $this->emptyMovie();
+        $allactoritems = [];//
+        $allactors = Casts()->ActorsToItems();//
 
         if ($editMode) {
             $html = html_beginForm('','movieForm', true);
             $html.= html_Hidden('Id', $id);
             $movieRecord = $this->get($id);
             $html.= html_Hidden('PosterGUID', $movieRecord['PosterGUID']);
+            $allactoritems = Casts()->CastsActorsToItems($id);//
         } else {
             $html = html_beginForm('','movieForm', true);
         }
@@ -175,7 +178,7 @@ final class Movies extends TableAccess{
                 $html.= html_submit('Submit', 'Enregistrer', 'form-comtrol important');
             $html.="</div>";
             
-
+            $html .= Casts()->getHtmlForm($allactors,$allactoritems);//
         $html.="</div>";
         $html.= html_closeForm();
         return $html;
@@ -191,9 +194,14 @@ final class Movies extends TableAccess{
             $newMovie['Author'] = $_POST['Author'];
             $newMovie['StyleId'] = $_POST['StyleId'];
             $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage();
+            $newMovie['SelectedItems'] = null;
             $newMovieId = $this->insert($newMovie);
+            if(isset($_POST['SelectedItems']))
+                $newMovie['SelectedItems'] = $_POST['SelectedItems'];
+            Casts()->saveFormActorsSelection($newMovieId,$newMovie['SelectedItems']);
         }
     }
+
 
     public function getDetailsHtml($id){
         $movieRecord = $this->get($id);
@@ -234,9 +242,12 @@ final class Movies extends TableAccess{
             $newMovie['StyleId'] = $_POST['StyleId'];
             $newMovie['PosterGUID'] = $this->_imageHelper->upLoadImage($_POST['PosterGUID']);
             $this->update($newMovie);
+            if(isset($_POST['SelectedItems']))
+                $newMovie['SelectedItems'] =$_POST['SelectedItems'];
+            Casts()->saveFormActorsSelection($newMovie['Id'],$newMovie['SelectedItems']);
         }
     }
-    
+
     public function getDeleteHtmlForm($id){
         $movieRecord = $this->get($id);
         $movieHtmlViewData = $this->getHtmlView($movieRecord);
@@ -368,7 +379,7 @@ final class Actors extends TableAccess{
                 $html .= html_flashButton('iconEdit',"editActorForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteActorForm.php?id=$id", "effacer", "bottom");
             $html.="</div>";
-
+            //$html .= Casts()->getHtmlForm($allmovie,$allmovieitems);//servira à ajouter la liste des films (à revoir)
                        
         $html.="</div>";
         return $html;
@@ -467,7 +478,7 @@ final class Casts extends TableAccess{
         return self::$_instance;
     }
 
-    public function getHtmlForm($movieItems,$selectedItems){
+    public function getHtmlForm($Items,$selectedItems){
         $viewContent="";  
             $viewContent .= "<table>";
                 $viewContent .= "<tr>";
@@ -482,7 +493,7 @@ final class Casts extends TableAccess{
                         $viewContent .= "<div id='MoveRight' ></div>";
                     $viewContent .= "</td>";
                     $viewContent .= "<td>";
-                        $viewContent .= makeUnselectedList($movieItems, $selectedItems);
+                        $viewContent .= makeUnselectedList($Items, $selectedItems);
                     $viewContent .= "</td>";
                 $viewContent .= "</tr>";
             $viewContent .= "</table>";
@@ -492,6 +503,12 @@ final class Casts extends TableAccess{
     function removeMovies($acteurID)
     {
         $this->deleteWhere("ActorId = $acteurID");
+    }
+
+    
+    function removeActors($movieID)
+    {
+        $this->deleteWhere("MovieId = $movieID");
     }
 
     function MoviesToItems(){
@@ -531,18 +548,20 @@ final class Casts extends TableAccess{
 
     function CastsActorsToItems($movieId){
         $items=[];
-        foreach(Casts()->selectWhere("Id = $movieId") as $cast){
+        foreach(Casts()->selectWhere("MovieId = $movieId") as $cast){
             $actor = Actors()->get($cast['ActorId']);
             $items[$actor['Id']] = $actor['Name'];  
         }
         return $items;
     }
 
-    function saveFormActorsSelection($selectedItemsId) {
+    function saveFormActorsSelection($movieId,$selectedItemsId) {
+        $this->removeActors($movieId);
         $selection['Id'] = 0;
+        $selection['MovieId'] = $movieId;
         foreach($selectedItemsId as $idActors) {
             $selection['ActorId'] = $idActors;
-            Casts()()->insert($selection);
+            Casts()->insert($selection);
         }
     }
     ///////////////////////////////////////////////////////////
