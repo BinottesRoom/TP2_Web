@@ -3,7 +3,6 @@
     include_once 'DAL/DBA.php';
     include_once 'utilities/selectionUtilities.php';
 
-    // retourne un tableau d'items (id, Nom de pays) issue de la table Selections
     function CastsActorsToItems($movieId){
         $items=[];
         foreach(Casts()->selectWhere("Id = $movieId") as $cast){
@@ -22,7 +21,6 @@
         return $items;
     }
    
-     // retourne un tableau d'items (id, Nom de pays) issue de la table Countries
     function ActorsToItems(){
         $items = [];
          foreach(Actors()->get() as $actor){
@@ -39,8 +37,7 @@
         return $items;
     }
 
-    // Met à jour la table Selections avec la liste des options sélectionnés du <select...>
-    // provenant du formulaire
+
     function saveFormActorsSelection($selectedItemsId) {
         $selection['Id'] = 0;
         foreach($selectedItemsId as $idActors) {

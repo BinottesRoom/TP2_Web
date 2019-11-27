@@ -394,6 +394,7 @@ $viewContent .= "</form>";
                 $html .= html_header($actorHtmlViewData['BirthDate'],3);
                 $html .= html_flashButton('iconEdit',"editActorForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteActorForm.php?id=$id", "effacer", "bottom");
+                //$allmovieitems = Casts()->CastsMoviesToItems($id);//
             $html.="</div>";
 
                        
