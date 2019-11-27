@@ -157,9 +157,15 @@ final class Movies extends TableAccess{
                 $html.= html_label('Pays', 'CountrieId');
                 $html.= Countries()->htmlComboBox($movieRecord['CountrieId']);
                 $dateOnly = explode(' ', $movieRecord['Year'])[0];
-                $html .= html_label('Année', 'Year');
-                $html .= html_textbox('Year', 'Année', $dateOnly);
-                //$html.= html_datepicker('Year', 'Année', $dateOnly);
+                if ($editMode)
+                {
+                    $html .= html_label('Année', 'Year');
+                    $html .= html_textbox('Year', 'Année', $dateOnly);
+                }
+                else
+                {
+                    $html.= html_datepicker('Year', 'Année', $dateOnly);
+                }
                 $html.= html_label('Auteur', 'Author');
                 $html.= html_textbox('Author', 'Auteur', $movieRecord['Author']);
                 $html.= html_label('Style', 'Style');
@@ -179,7 +185,7 @@ final class Movies extends TableAccess{
         if (isset($_POST['Submit'])){
             $newMovie['Id'] = 0;
             $newMovie['Title'] = $_POST['Title'];
-            $newMovie['Synopsis'] = $_POST['Synopsis'];
+            $newMovie['Synopsis'] = $_POST['synopsis'];
             $newMovie['CountrieId'] = $_POST['CountrieId'];
             $newMovie['Year'] = $_POST['Year'];
             $newMovie['Author'] = $_POST['Author'];
