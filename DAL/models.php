@@ -201,11 +201,11 @@ final class Movies extends TableAccess{
             $html.="</div>";
     
             $html .="<div>";
-                $html .= html_header($movieRecord['Title'],1);
+                $html .= html_header($movieHtmlViewData['Title'],1);
                 $html .= html_header($movieHtmlViewData['CountrieId'],3);
                 $html .= html_header($movieHtmlViewData['Year'],3);
-                $html .= html_header($movieRecord['Author'], 3);
-                $html .= html_header($movieRecord['StyleId'][[]]); //Probleme a afficher StyleId
+                $html .= html_header($movieHtmlViewData['Author'], 3);
+                $html .= html_header($movieHtmlViewData['StyleId']);
                 $html .= html_flashButton('iconEdit',"editMovieForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
                 $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
@@ -241,13 +241,13 @@ final class Movies extends TableAccess{
                 $posterURL = $this->_imageHelper->getURL($movieRecord['PosterGUID']);
                 $html .= html_image($posterURL, 'poster');
             $html.="</div>";
-    
+
             $html .="<div>";
                 $html .= html_header($movieHtmlViewData['Title'],1);
                 $html .= html_header($movieHtmlViewData['CountrieId'],3);
                 $html .= html_header($movieHtmlViewData['Year'],3);
-                $html .= html_header($movieRecord['Author'], 3);
-                $html .= html_header($movieRecord['StyleId'][['Name']]); //Probleme a afficher StyleId
+                $html .= html_header($movieHtmlViewData['Author'], 3);
+                $html .= html_header($movieHtmlViewData['StyleId']);
                 $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
 
                 $html .= html_beginForm('','deleteMovieForm');
