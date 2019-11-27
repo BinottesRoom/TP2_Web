@@ -4,7 +4,7 @@
     if (isset($_POST['Submit'])){
         if (isset($_POST['Id'])) {
             Movies()->deleteFromForm();
-        }
+        }   
         redirect("listMovies.php");
     }
 
