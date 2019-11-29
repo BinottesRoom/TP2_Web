@@ -141,7 +141,7 @@ final class Movies extends TableAccess{
             $html.= html_Hidden('Id', $id);
             $movieRecord = $this->get($id);
             $html.= html_Hidden('PosterGUID', $movieRecord['PosterGUID']);
-            $allactoritems = Casts()->CastsActorsToItems($id);//
+            $allactoritems = Casts()->CastsActorsToItems($id);
         } else {
             $html = html_beginForm('','movieForm', true);
         }
@@ -206,8 +206,8 @@ final class Movies extends TableAccess{
     public function getDetailsHtml($id){
         $movieRecord = $this->get($id);
         $movieHtmlViewData = $this->getHtmlView($movieRecord);
-        $allactoritems = Casts()->CastsActorsToItems($id);//
-
+        $allActorItems = Casts()->CastsActorsToItems2($id);
+            
         $html = "<div class='detailsLayout'>";
 
             $html.="<div>";
@@ -225,7 +225,7 @@ final class Movies extends TableAccess{
                 $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
                 $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
             $html .= "</div>";
-            $html .= makeSelectedList($allactoritems);
+            $html.= SelectedDetails($allActorItems);
                        
         $html.="</div>";
         return $html;
@@ -321,7 +321,6 @@ final class Actors extends TableAccess{
         $htmlView['BirthDate'] =$dateOnly;
         $photoURL = $this->_imageHelper->getURL($actorRecord['PhotoGUID']);
         $htmlView['PhotoGUID'] = "<img src='$photoURL' class='smallActorPhoto'>";
-
         return $htmlView;
     }
     public function getHtmlForm($id = 0){
@@ -366,7 +365,7 @@ final class Actors extends TableAccess{
     public function getDetailsHtml($id){
         $actorRecord = $this->get($id);
         $actorHtmlViewData = $this->getHtmlView($actorRecord);
-        $allmovieitems = Casts()->CastsMoviesToItems($id);
+        $allmovieitems = Casts()->CastsMoviesToItems2($id);
 
         $html = "<div class='detailsLayout'>";
 
@@ -381,12 +380,9 @@ final class Actors extends TableAccess{
                 $html .= html_header($actorHtmlViewData['BirthDate'],3);
                 $html .= html_flashButton('iconEdit',"editActorForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteActorForm.php?id=$id", "effacer", "bottom");
-
             $html.="</div>";
-            $html .= makeSelectedList($allmovieitems);
-                       
+            $html.= SelectedDetails($allmovieitems);
         $html.="</div>";
-
         return $html;
     }
     public function getDeleteHtmlForm($id){
@@ -524,6 +520,16 @@ final class Casts extends TableAccess{
         return $items;
     }
 
+    function CastsMoviesToItems2($actorId){
+        $items=[];
+        foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
+            $movie = Movies()->get($cast['MovieId']);
+            $items[$movie['Id']] = $movie['Title'];  
+            $items[$movie['PosterGUID']] = $movie['PosterGUID']; 
+        }
+        return $items;
+    }
+
     function CastsMoviesToItems($actorId){
         $items=[];
         foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
@@ -533,15 +539,6 @@ final class Casts extends TableAccess{
         return $items;
     }
 
-    function CastsMoviesToItemsDansDetail($actorId){
-        $items=[];
-        foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
-            $movie = Movies()->get($cast['MovieId']);
-            $items[$movie['Id']] = $movie['Title'];  
-            $items[$movie['PosterGUID']] = $movie['PosterGUID'];
-        }
-        return $items;
-    }
 
     function saveFormMoviesSelection($actorId,$selectedItemsId) {
         $this->removeMovies($actorId);
@@ -557,7 +554,16 @@ final class Casts extends TableAccess{
         $items = [];
          foreach(Actors()->get() as $actor){
             $items[$actor['Id']] = $actor['Name'];  
-            $items[$actor['PhotoGUID']] = $actor['PhotoGUID'];
+        }
+        return $items;
+    }
+
+    function CastsActorsToItems2($movieId){
+        $items=[];
+        foreach(Casts()->selectWhere("MovieId = $movieId") as $cast){
+            $actor = Actors()->get($cast['ActorId']);
+            $items[$actor['Id']] = $actor['Name'];
+            $items[$actor['PhotoGUID']] = $actor['PhotoGUID'];  
         }
         return $items;
     }
@@ -567,17 +573,6 @@ final class Casts extends TableAccess{
         foreach(Casts()->selectWhere("MovieId = $movieId") as $cast){
             $actor = Actors()->get($cast['ActorId']);
             $items[$actor['Id']] = $actor['Name'];
-            $items[$actor['PhotoGUID']] = $actor['PhotoGUID'];  
-        }
-        return $items;
-    }
-
-    function CastsActorsToItemsDansDetails($movieId){
-        $items=[];
-        foreach(Casts()->selectWhere("MovieId = $movieId") as $cast){
-            $actor = Actors()->get($cast['ActorId']);
-            $items[$actor['Id']] = $actor['Name'];
-            $items[$actor['PhotoGUID']] = $actor['PhotoGUID'];  
         }
         return $items;
     }
