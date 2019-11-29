@@ -206,6 +206,7 @@ final class Movies extends TableAccess{
     public function getDetailsHtml($id){
         $movieRecord = $this->get($id);
         $movieHtmlViewData = $this->getHtmlView($movieRecord);
+        $allactoritems = Casts()->CastsActorsToItems($id);//
 
         $html = "<div class='detailsLayout'>";
 
@@ -224,7 +225,7 @@ final class Movies extends TableAccess{
                 $html .= html_flashButton('iconDelete',"deleteMovieForm.php?id=$id", "effacer", "bottom");
                 $html .= html_textarea('synopsis', '', 5, $movieRecord['Synopsis'], true);
             $html .= "</div>";
-
+            $html .= makeSelectedList($allactoritems);
                        
         $html.="</div>";
         return $html;
@@ -320,6 +321,7 @@ final class Actors extends TableAccess{
         $htmlView['BirthDate'] =$dateOnly;
         $photoURL = $this->_imageHelper->getURL($actorRecord['PhotoGUID']);
         $htmlView['PhotoGUID'] = "<img src='$photoURL' class='smallActorPhoto'>";
+
         return $htmlView;
     }
     public function getHtmlForm($id = 0){
@@ -364,6 +366,7 @@ final class Actors extends TableAccess{
     public function getDetailsHtml($id){
         $actorRecord = $this->get($id);
         $actorHtmlViewData = $this->getHtmlView($actorRecord);
+        $allmovieitems = Casts()->CastsMoviesToItems($id);
 
         $html = "<div class='detailsLayout'>";
 
@@ -378,10 +381,12 @@ final class Actors extends TableAccess{
                 $html .= html_header($actorHtmlViewData['BirthDate'],3);
                 $html .= html_flashButton('iconEdit',"editActorForm.php?id=$id", "éditer", "bottom");
                 $html .= html_flashButton('iconDelete',"deleteActorForm.php?id=$id", "effacer", "bottom");
+
             $html.="</div>";
-            //$html .= Casts()->getHtmlForm($allmovie,$allmovieitems);//servira à ajouter la liste des films (à revoir)
+            $html .= makeSelectedList($allmovieitems);
                        
         $html.="</div>";
+
         return $html;
     }
     public function getDeleteHtmlForm($id){
@@ -524,6 +529,7 @@ final class Casts extends TableAccess{
         foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
             $movie = Movies()->get($cast['MovieId']);
             $items[$movie['Id']] = $movie['Title'];  
+            $items[$movie['PosterGUID']] = $movie['PosterGUID'];
         }
         return $items;
     }
@@ -542,6 +548,7 @@ final class Casts extends TableAccess{
         $items = [];
          foreach(Actors()->get() as $actor){
             $items[$actor['Id']] = $actor['Name'];  
+            $items[$actor['PhotoGUID']] = $actor['PhotoGUID'];
         }
         return $items;
     }
