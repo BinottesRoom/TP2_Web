@@ -529,6 +529,15 @@ final class Casts extends TableAccess{
         foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
             $movie = Movies()->get($cast['MovieId']);
             $items[$movie['Id']] = $movie['Title'];  
+        }
+        return $items;
+    }
+
+    function CastsMoviesToItemsDansDetail($actorId){
+        $items=[];
+        foreach(Casts()->selectWhere("ActorId = $actorId") as $cast){
+            $movie = Movies()->get($cast['MovieId']);
+            $items[$movie['Id']] = $movie['Title'];  
             $items[$movie['PosterGUID']] = $movie['PosterGUID'];
         }
         return $items;
@@ -554,6 +563,16 @@ final class Casts extends TableAccess{
     }
 
     function CastsActorsToItems($movieId){
+        $items=[];
+        foreach(Casts()->selectWhere("MovieId = $movieId") as $cast){
+            $actor = Actors()->get($cast['ActorId']);
+            $items[$actor['Id']] = $actor['Name'];
+            $items[$actor['PhotoGUID']] = $actor['PhotoGUID'];  
+        }
+        return $items;
+    }
+
+    function CastsActorsToItemsDansDetails($movieId){
         $items=[];
         foreach(Casts()->selectWhere("MovieId = $movieId") as $cast){
             $actor = Actors()->get($cast['ActorId']);
