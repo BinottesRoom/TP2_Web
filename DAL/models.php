@@ -4,7 +4,7 @@ include_once 'imageHelper.php';
 include_once 'utilities/htmlHelper.php';
 include_once 'utilities/selectionUtilities.php';
 
-// Singletons d'accès aux tables
+// Singletons d'accès aux tables.
 final class Countries extends TableAccess{
     public $Id;
     /** VARCHAR(128) */
